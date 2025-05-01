@@ -88,10 +88,14 @@ if file_path:
     with open(summary_file, "w", encoding="utf-8") as f:
         f.write(summary_text)
 
-    # Allow user to edit summary before saving
+    # ✅ Editable Summary Field
     edited_summary = st.text_area("Edit Summary", summary_text, height=200)
 
-    st.text_area("Summary", summary_text, height=200)
+    # ✅ Save Edited Summary
+    if st.button("💾 Save Edited Summary"):
+        with open(summary_file, "w", encoding="utf-8") as f:
+            f.write(edited_summary)
+        st.success("✅ Summary updated successfully!")
 
     # ✅ Extract Action Items
     st.subheader("✅ Action Items & Decisions")
@@ -127,7 +131,7 @@ if file_path:
                 assign_tasks_from_live_summary()
         st.success("✅ Tasks successfully assigned to Trello!")
 
-    # PDF Download Option
+    # 📥 PDF Download Option
     if st.button("📥 Download PDF"):
         pdf = FPDF()
         pdf.set_auto_page_break(auto=True, margin=15)
@@ -143,7 +147,7 @@ if file_path:
         pdf.multi_cell(0, 10, txt="Transcript:\n" + transcript_text)
         pdf.ln(10)
 
-        # Summary
+        # **Use Edited Summary in PDF**
         pdf.set_font("Arial", size=12)
         pdf.multi_cell(0, 10, txt="Summary:\n" + edited_summary)
         pdf.ln(10)
